@@ -437,7 +437,7 @@
       <h1>Entrar</h1>
       <form id="login">
         <label for="email">E-mail</label>
-        <input id="email" name="email" type="email" autocomplete="username" required>
+        <input id="email" name="email" type="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required>
         <label for="senha">Senha</label>
         <input id="senha" name="senha" type="password" autocomplete="current-password" required>
         <div class="botoes" style="margin-top:24px"><button class="btn grande" type="submit">Entrar</button></div>
@@ -446,7 +446,7 @@
     const f = document.getElementById("login");
     f.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.senha.value });
+      const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim().toLowerCase(), password: f.senha.value });
       if (error) { document.getElementById("erro").textContent = "E-mail ou senha incorretos."; return; }
       render();
     });
