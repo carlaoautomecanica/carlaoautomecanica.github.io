@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Carlão Auto Mecânica</title>
-  <meta name="theme-color" content="#1f2937">
+  <meta name="theme-color" content="#1c1f26">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon-192.png">
@@ -14,9 +14,23 @@
 </head>
 <body>
   <header class="topo">
-    <a href="#/" class="marca" id="marca">Oficina</a>
+    <a href="#/" class="marca"><img src="icon.svg" alt="" width="30" height="30"><span id="marca">Oficina</span></a>
   </header>
+
   <main id="app"><p class="carregando">Carregando…</p></main>
+
+  <nav class="barra" id="barra">
+    <a href="#/" data-aba="inicio">
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</a>
+    <a href="#/buscar" data-aba="buscar">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Buscar</a>
+    <a href="#/novo" data-aba="novo" class="aba-novo">
+      <span class="mais"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Novo</a>
+    <a href="#/resumo" data-aba="resumo">
+      <svg viewBox="0 0 24 24"><path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/></svg>Resumo</a>
+  </nav>
+
+  <div class="aviso-toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>

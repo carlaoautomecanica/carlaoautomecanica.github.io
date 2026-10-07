@@ -4,10 +4,19 @@ Site simples para o celular e o computador. Ele mostra os carros que estão na o
 
 ## Como funciona
 
-- **Início:** os carros que estão na oficina agora, com a situação de cada um (Orçamento, Em andamento, Esperando peça, Pronto, Entregue), e o total a receber.
-- **Buscar:** digite a placa ou o nome do cliente para ver o dono do carro e tudo que já foi feito nele.
-- **Novo serviço:** placa, carro, cliente, WhatsApp e a lista de serviços e peças com os valores. Se a placa já estiver cadastrada, os dados do cliente aparecem preenchidos.
-- **Ficha do serviço:** um toque muda a situação. Também tem botões para **enviar o orçamento** e **avisar que está pronto** pelo WhatsApp, e para registrar o pagamento (total ou parcial).
+A barra de baixo tem quatro abas: **Início · Buscar · ＋ Novo · Resumo**.
+
+- **Início:** números do dia (carros na oficina, carros prontos, total a receber), os carros que estão na oficina agora, com os prontos primeiro, e quem já levou o carro, mas ainda deve.
+- **Buscar:** placa ou nome do cliente. Mostra o dono, quantas vezes o carro veio, quanto já gastou e o histórico completo.
+- **Novo serviço:** placa, carro, cliente, WhatsApp e serviços e peças. Os dados do cliente aparecem preenchidos se a placa já existir, e o campo de serviço sugere os nomes usados antes.
+- **Ficha do serviço:** um toque muda a situação. Também tem botões para:
+  - enviar o **orçamento** ou o **aviso de pronto** pelo WhatsApp;
+  - gerar **orçamento e recibo em PDF**;
+  - registrar o pagamento, total ou parcial.
+- **Resumo:** quanto faturou e recebeu no mês, quantos carros vieram e os serviços mais feitos.
+- **Hora da revisão:** clientes que não voltam há mais de 6 meses, com a mensagem pronta para o WhatsApp.
+
+Telefone, endereço e Pix da oficina, que aparecem no PDF e nas mensagens, ficam no arquivo `config.js`.
 
 Enquanto o Supabase não estiver configurado, o site funciona em **modo de teste**. Nesse modo, os dados ficam salvos só no navegador em que ele está aberto.
 
