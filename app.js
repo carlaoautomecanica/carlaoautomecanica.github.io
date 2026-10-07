@@ -447,7 +447,13 @@
     f.addEventListener("submit", async (e) => {
       e.preventDefault();
       const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim().toLowerCase(), password: f.senha.value });
-      if (error) { document.getElementById("erro").textContent = "E-mail ou senha incorretos."; return; }
+      if (error) {
+        const msg = /invalid login/i.test(error.message) ? "E-mail ou senha incorretos."
+          : /not confirmed/i.test(error.message) ? "Este e-mail ainda não foi confirmado no Supabase."
+          : "Não foi possível entrar.";
+        document.getElementById("erro").textContent = msg + " (" + error.message + ")";
+        return;
+      }
       render();
     });
   }
