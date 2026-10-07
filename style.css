@@ -5,9 +5,9 @@
   --suave: #6b7280;
   --borda: #d6d9df;
   --linha: #eceef1;
-  --topo: #1c1f26;
-  --amarelo: #facc15;
-  --amarelo-escuro: #a16207;
+  --topo: #0b0b0c;
+  --destaque: #e11d2a;
+  --destaque-escuro: #b3141f;
   --primario: #2563eb;
   --verde: #16a34a;
   --whats: #25d366;
@@ -29,9 +29,8 @@
     --suave: #9aa1ad;
     --borda: #343945;
     --linha: #272b34;
-    --topo: #0a0b0e;
+    --topo: #0b0b0c;
     --sombra: 0 1px 2px rgba(0, 0, 0, .4);
-    --amarelo-escuro: #facc15;
   }
 }
 
@@ -48,13 +47,13 @@ body {
 /* ---------- Topo e barra inferior ---------- */
 .topo {
   background: var(--topo);
-  padding: 12px 16px;
-  padding-top: max(12px, env(safe-area-inset-top));
+  padding: 6px 16px;
+  padding-top: max(6px, env(safe-area-inset-top));
   position: sticky; top: 0; z-index: 10;
-  border-bottom: 3px solid var(--amarelo);
+  border-bottom: 3px solid var(--destaque);
 }
-.marca { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 800; font-size: 1.1rem; text-decoration: none; }
-.marca img { border-radius: 7px; }
+.marca { display: flex; justify-content: center; }
+.marca img { height: 52px; width: auto; display: block; }
 
 main {
   max-width: 760px; margin: 0 auto;
@@ -75,13 +74,13 @@ main {
   min-height: 64px; color: var(--suave); text-decoration: none; font-size: .72rem; font-weight: 600;
 }
 .barra svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.barra a.ativa { color: var(--texto); }
-.barra a.ativa svg { stroke: var(--texto); }
+.barra a.ativa { color: var(--destaque); }
+.barra a.ativa svg { stroke: var(--destaque); }
 .barra .mais {
   display: grid; place-items: center; width: 46px; height: 46px; margin-top: -18px;
-  border-radius: 50%; background: var(--amarelo); box-shadow: 0 3px 8px rgba(0, 0, 0, .2);
+  border-radius: 50%; background: var(--destaque); box-shadow: 0 3px 8px rgba(0, 0, 0, .2);
 }
-.barra .mais svg { stroke: #14161b; stroke-width: 3; }
+.barra .mais svg { stroke: #fff; stroke-width: 3; }
 body.sem-barra .barra { display: none; }
 
 /* ---------- Textos ---------- */
@@ -108,7 +107,7 @@ h2 { font-size: 1.05rem; margin: 26px 0 10px; color: var(--suave); text-transfor
 }
 .btn:active { transform: scale(.97); }
 .btn.grande { min-height: 66px; font-size: 1.15rem; }
-.btn.amarelo { background: var(--amarelo); color: #14161b; }
+.btn.destaque { background: var(--destaque); color: #fff; }
 .btn.verde { background: var(--verde); }
 .btn.whats { background: var(--whats); color: #053b1c; }
 .btn.claro { background: var(--cartao); color: var(--texto); border: 2px solid var(--borda); }
@@ -131,12 +130,12 @@ h2 { font-size: 1.05rem; margin: 26px 0 10px; color: var(--suave); text-transfor
 .numero.verde { border-top-color: var(--st-pronto); }
 .numero.vermelho { border-top-color: var(--perigo); }
 .numero.vermelho .valor { color: var(--perigo); }
-.numero.amarelo { border-top-color: var(--amarelo); }
+.numero.prata { border-top-color: #9ca3af; }
 
 .faixa {
   display: flex; align-items: center; gap: 12px;
   background: var(--cartao); border-radius: 14px; padding: 12px 14px; margin: 10px 0;
-  text-decoration: none; color: inherit; box-shadow: var(--sombra); border-left: 6px solid var(--amarelo);
+  text-decoration: none; color: inherit; box-shadow: var(--sombra); border-left: 6px solid var(--destaque);
 }
 .faixa .icone { font-size: 1.5rem; }
 .faixa .texto { flex: 1; font-weight: 700; }
@@ -154,7 +153,7 @@ input, textarea {
   border: 2px solid var(--borda); border-radius: 14px;
   font: inherit; font-size: 1.08rem; background: var(--cartao); color: var(--texto);
 }
-input:focus, textarea:focus { outline: none; border-color: var(--amarelo); }
+input:focus, textarea:focus { outline: none; border-color: var(--destaque); }
 textarea { min-height: 90px; resize: vertical; }
 input.placa { text-transform: uppercase; font-weight: 800; letter-spacing: 2px; }
 input.placa::placeholder { letter-spacing: normal; font-weight: 600; text-transform: none; }
@@ -233,7 +232,8 @@ input.placa::placeholder { letter-spacing: normal; font-weight: 600; text-transf
 
 /* Login */
 .login { text-align: center; padding-top: 24px; }
-.login img { width: 96px; height: 96px; border-radius: 22px; box-shadow: var(--sombra); }
+.login .logo-grande { background: var(--topo); border-radius: 20px; padding: 14px; box-shadow: var(--sombra); }
+.login .logo-grande img { width: 100%; max-width: 300px; display: block; margin: 0 auto; }
 .login h1 { margin: 14px 0 4px; }
 .login form { text-align: left; margin-top: 18px; }
 

@@ -5,8 +5,9 @@ window.CONFIG = {
   NOME_OFICINA: "Carlão Auto Mecânica",
 
   // Aparecem no orçamento/recibo em PDF. Deixe "" para não mostrar.
-  TELEFONE_OFICINA: "",
-  ENDERECO_OFICINA: "",
+  SLOGAN: "Seu carro em boas mãos",
+  TELEFONE_OFICINA: "(19) 99741-1655  ·  (19) 3891-2783",
+  ENDERECO_OFICINA: "Av. Honório Orlando Martini, 1140 – Jardim Novo Horizonte – Mogi Guaçu/SP",
   PIX: "",
 
   // Depois de quantos meses sem voltar o cliente aparece em "Hora da revisão".

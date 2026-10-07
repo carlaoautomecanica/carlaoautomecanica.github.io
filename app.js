@@ -14,11 +14,15 @@
     { id: "orcamento", nome: "Orçamento" },
     { id: "entregue", nome: "Entregue" },
   ];
+  const SERVICOS_PADRAO = [
+    "Revisão geral", "Troca de óleo", "Filtro de óleo", "Filtro de ar", "Filtro de combustível",
+    "Pastilha de freio", "Disco de freio", "Amortecedor", "Suspensão", "Injeção eletrônica",
+    "Ar-condicionado", "Diagnóstico computadorizado", "Mão de obra",
+  ];
   const nomeStatus = (id) => (STATUS.find((s) => s.id === id) || STATUS[3]).nome;
   const ordemStatus = (id) => STATUS.findIndex((s) => s.id === id);
 
   const app = document.getElementById("app");
-  document.getElementById("marca").textContent = NOME;
   document.title = NOME;
 
   // ---------- Utilidades ----------
@@ -190,7 +194,7 @@
   const formBusca = (valor = "", foco = false) => `
     <form class="busca" id="form-busca">
       <input name="q" class="placa" placeholder="Placa ou nome do cliente" value="${esc(valor)}" autocomplete="off" ${foco ? "autofocus" : ""}>
-      <button class="btn" type="submit" aria-label="Buscar">🔍</button>
+      <button class="btn destaque" type="submit" aria-label="Buscar">🔍</button>
     </form>`;
 
   const resumoItens = (s) => {
@@ -295,10 +299,10 @@
           <div class="info"><b>Telefone:</b> ${esc(fmtTelefone(primeiro.telefone) || "—")}</div>
           <div class="info"><b>Vezes na oficina:</b> ${doCarro.length} · <b>Total gasto:</b> ${brl(gastoTotal)}</div>
         </div>
-        <div class="botoes"><a class="btn amarelo" href="#/novo/${esc(placa)}">＋ Novo serviço para este carro</a></div>` : ""}
+        <div class="botoes"><a class="btn destaque" href="#/novo/${esc(placa)}">＋ Novo serviço para este carro</a></div>` : ""}
       <h1>${achados.length ? "Histórico" : "Nada encontrado"}</h1>
       <div class="lista">${achados.map((s) => cartao(s, true)).join("")}</div>
-      ${!achados.length && placa ? `<div class="botoes"><a class="btn amarelo" href="#/novo/${esc(placa)}">＋ Cadastrar ${esc(fmtPlaca(placa))}</a></div>` : ""}`;
+      ${!achados.length && placa ? `<div class="botoes"><a class="btn destaque" href="#/novo/${esc(placa)}">＋ Cadastrar ${esc(fmtPlaca(placa))}</a></div>` : ""}`;
     ligarBusca();
   }
 
@@ -454,7 +458,7 @@
         <textarea id="observacoes" name="observacoes">${esc(s.observacoes)}</textarea>
 
         <div class="botoes" style="margin-top:24px">
-          <button class="btn grande amarelo" type="submit">💾 Salvar</button>
+          <button class="btn grande destaque" type="submit">💾 Salvar</button>
           <a class="btn claro" href="${existente ? "#/servico/" + esc(s.id) : "#/"}">Cancelar</a>
         </div>
         <div class="erro" id="erro"></div>
@@ -544,6 +548,7 @@
         const d = String(i.descricao || "").trim();
         if (d) vistos.set(d.toLowerCase(), d);
       }
+    for (const d of SERVICOS_PADRAO) if (!vistos.has(d.toLowerCase())) vistos.set(d.toLowerCase(), d);
     return [...vistos.values()].slice(0, 200);
   }
 
@@ -591,7 +596,7 @@
         <a class="btn claro pequeno" href="#/resumo/${proximo}" aria-label="Próximo mês">›</a>
       </div>
       <div class="painel dois">
-        <div class="numero amarelo"><div class="valor dinheiro">${brl(faturado)}</div><div class="rotulo">faturado</div></div>
+        <div class="numero prata"><div class="valor dinheiro">${brl(faturado)}</div><div class="rotulo">faturado</div></div>
         <div class="numero verde"><div class="valor dinheiro">${brl(recebido)}</div><div class="rotulo">recebido</div></div>
         <div class="numero vermelho"><div class="valor dinheiro">${brl(Math.max(0, faturado - recebido))}</div><div class="rotulo">falta receber</div></div>
         <div class="numero azul"><div class="valor">${carros}</div><div class="rotulo">carros atendidos</div></div>
@@ -650,7 +655,17 @@
   // ---------- PDF (orçamento e recibo) ----------
 
   let jspdfPromessa;
+  let logoPDF = null; // logo.jpg em data URL, para o cabeçalho do PDF
+  function carregarLogo() {
+    if (logoPDF) return Promise.resolve();
+    return fetch("logo.jpg")
+      .then((r) => r.blob())
+      .then((b) => new Promise((ok) => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.readAsDataURL(b); }))
+      .then((url) => { logoPDF = url; })
+      .catch(() => {});
+  }
   function carregarJsPDF() {
+    carregarLogo();
     if (window.jspdf) return Promise.resolve(window.jspdf.jsPDF);
     jspdfPromessa = jspdfPromessa || new Promise((ok, erro) => {
       const sc = document.createElement("script");
@@ -668,17 +683,28 @@
     const recibo = tipo === "recibo";
     const t = total(s), pago = Number(s.pago) || 0, f = falta(s);
 
-    // Cabeçalho
-    doc.setFillColor(28, 31, 38); doc.rect(0, 0, W, 30, "F");
-    doc.setFillColor(250, 204, 21); doc.rect(0, 30, W, 1.6, "F");
-    doc.setTextColor(250, 204, 21); doc.setFont("helvetica", "bold"); doc.setFontSize(20);
-    doc.text(NOME, M, 15);
-    doc.setTextColor(220, 223, 228); doc.setFont("helvetica", "normal"); doc.setFontSize(9.5);
-    const contato = [CFG.ENDERECO_OFICINA, CFG.TELEFONE_OFICINA].filter(Boolean).join("   |   ");
-    if (contato) doc.text(contato, M, 23);
+    // Cabeçalho: logo à esquerda, contatos à direita
+    doc.setFillColor(11, 11, 12); doc.rect(0, 0, W, 36, "F");
+    doc.setFillColor(225, 29, 42); doc.rect(0, 36, W, 1.6, "F");
+    if (logoPDF) {
+      doc.addImage(logoPDF, "JPEG", M - 4, 3, 46, 30);
+    } else {
+      doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(20);
+      doc.text(NOME, M, 20);
+    }
+    doc.setFontSize(9.5);
+    let yc = 13;
+    if (CFG.TELEFONE_OFICINA) {
+      doc.setFont("helvetica", "bold"); doc.setTextColor(255, 255, 255);
+      doc.text(CFG.TELEFONE_OFICINA, D, yc, { align: "right" }); yc += 6;
+    }
+    doc.setFont("helvetica", "normal"); doc.setTextColor(200, 203, 208);
+    for (const parte of String(CFG.ENDERECO_OFICINA || "").split(" – ").filter(Boolean)) {
+      doc.text(parte, D, yc, { align: "right" }); yc += 5;
+    }
 
     // Título
-    let y = 46;
+    let y = 50;
     doc.setTextColor(20, 22, 27); doc.setFont("helvetica", "bold"); doc.setFontSize(17);
     doc.text(recibo ? "RECIBO" : "ORÇAMENTO", M, y);
     doc.setFont("helvetica", "normal"); doc.setFontSize(10);
@@ -763,6 +789,7 @@
     botao.textContent = "Gerando…";
     try {
       const jsPDF = await carregarJsPDF();
+      await carregarLogo();
       const doc = montarPDF(jsPDF, s, tipo);
       const nomeArq = `${tipo === "recibo" ? "Recibo" : "Orcamento"}-${normPlaca(s.placa)}.pdf`;
       const arquivo = new File([doc.output("blob")], nomeArq, { type: "application/pdf" });
@@ -790,15 +817,15 @@
     document.body.classList.add("sem-barra");
     app.innerHTML = `
       <div class="login">
-        <img src="icon.svg" alt="">
-        <h1>${esc(NOME)}</h1>
-        <div class="sub">Controle da oficina</div>
+        <div class="logo-grande"><img src="logo.jpg" alt="${esc(NOME)}"></div>
+        <h1>Controle da oficina</h1>
+        <div class="sub">Entre com seu e-mail e senha</div>
         <form id="login">
           <label for="email">E-mail</label>
           <input id="email" name="email" type="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required>
           <label for="senha">Senha</label>
           <input id="senha" name="senha" type="password" autocomplete="current-password" required>
-          <div class="botoes" style="margin-top:24px"><button class="btn grande amarelo" type="submit">Entrar</button></div>
+          <div class="botoes" style="margin-top:24px"><button class="btn grande destaque" type="submit">Entrar</button></div>
           <div class="erro" id="erro"></div>
         </form>
       </div>`;
@@ -825,7 +852,7 @@
     document.body.classList.add("sem-barra");
     app.innerHTML = `
       <div class="login">
-        <img src="icon.svg" alt="">
+        <div class="logo-grande"><img src="logo.jpg" alt=""></div>
         <h1>Sem acesso aos dados</h1>
         <p>O e-mail <b>${esc(email)}</b> entrou, mas não está liberado na lista da equipe.</p>
         <p class="sub">Peça para quem cuida do sistema adicionar este e-mail na tabela <b>equipe</b> do Supabase.</p>

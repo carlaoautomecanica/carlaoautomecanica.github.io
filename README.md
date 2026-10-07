@@ -16,7 +16,7 @@ A barra de baixo tem quatro abas: **Início · Buscar · ＋ Novo · Resumo**.
 - **Resumo:** quanto faturou e recebeu no mês, quantos carros vieram e os serviços mais feitos.
 - **Hora da revisão:** clientes que não voltam há mais de 6 meses, com a mensagem pronta para o WhatsApp.
 
-Telefone, endereço e Pix da oficina, que aparecem no PDF e nas mensagens, ficam no arquivo `config.js`.
+Telefone, endereço e Pix da oficina, que aparecem no PDF e nas mensagens, ficam no arquivo `config.js`. O logo é o arquivo `logo.jpg`.
 
 Enquanto o Supabase não estiver configurado, o site funciona em **modo de teste**. Nesse modo, os dados ficam salvos só no navegador em que ele está aberto.
 
