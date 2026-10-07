@@ -4,7 +4,7 @@ App de controle da oficina mecânica do sogro do dono deste repositório. Quem u
 
 ## Como funciona
 - Site estático, sem build: `index.html`, `style.css`, `app.js` (JS puro, sem framework), `config.js`.
-- Publicado pelo **GitHub Pages** a partir da branch `main`: https://gabrielgarcia095-source.github.io/Oficina/. Um push no `main` publica em 1 ou 2 minutos.
+- Repositório `carlaoautomecanica/carlaoautomecanica.github.io` (organização da oficina). Publicado pelo **GitHub Pages** a partir da branch `main`: https://carlaoautomecanica.github.io/. Um push no `main` publica em 1 ou 2 minutos.
 - Dados no **Supabase** (URL e chave pública em `config.js`). Tabelas `servicos` e `equipe` (veja `supabase.sql`).
   - Só os e-mails da tabela `equipe` veem os dados (RLS). Um login precisa existir em Authentication → Users **e** estar na `equipe`, escrito igual.
   - A rede do ambiente do Claude bloqueia o Supabase e o github.io. Para testar, use o modo de teste.
