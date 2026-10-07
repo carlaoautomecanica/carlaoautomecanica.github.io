@@ -26,7 +26,7 @@ Enquanto o Supabase não estiver configurado, o site funciona em **modo de teste
 
 ### 2. Publicar o site (GitHub Pages, gratuito)
 1. No GitHub, abra o repositório e vá em **Settings → Pages → Build and deployment**, escolha **Deploy from a branch**, depois **main** e a pasta **/ (root)**, e clique em **Save**.
-2. Depois de 1 ou 2 minutos, o site estará em `https://<seu-usuario>.github.io/oficina/`.
+2. Depois de 1 ou 2 minutos, o site estará em **https://gabrielgarcia095-source.github.io/Oficina/**.
 
 ### 3. Colocar no celular do seu sogro
 - Abra o link no celular dele e faça o login.
